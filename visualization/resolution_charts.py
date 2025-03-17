@@ -20,7 +20,7 @@ def analyze_resolution_times(df, output_dir):
     Returns:
         DataFrame with analyzed data
     """
-    figsize=(5, 3)
+    figsize=(4.4, 2.64)
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
 
@@ -103,6 +103,7 @@ def analyze_resolution_times(df, output_dir):
             color=[category_colors[cat] for cat in available_categories],
             width=0.7
         )
+        ax.set_xlim([0, 100])
 
         #plt.title('Resolution Time Categories by Issue Type', fontsize=16, pad=20)
         plt.xlabel('Percentage', fontsize=12)
@@ -167,6 +168,7 @@ def analyze_resolution_times(df, output_dir):
             color=[category_colors[cat] for cat in available_categories],
             width=0.7
         )
+        ax.set_xlim([0, 100])
 
         #plt.title('Resolution Time Categories by Priority', fontsize=16, pad=20)
         plt.xlabel('Percentage', fontsize=12)
