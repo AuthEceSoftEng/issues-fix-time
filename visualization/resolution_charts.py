@@ -20,6 +20,7 @@ def analyze_resolution_times(df, output_dir):
     Returns:
         DataFrame with analyzed data
     """
+    figsize=(5, 3)
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
 
@@ -39,7 +40,7 @@ def analyze_resolution_times(df, output_dir):
         category_counts = df['time_category'].value_counts().sort_index()
         category_percentages = category_counts / len(df) * 100
 
-        plt.figure(figsize=(10, 8))
+        plt.figure(figsize=figsize)
         patches, texts, autotexts = plt.pie(
             category_counts,
             labels=category_counts.index,
@@ -59,9 +60,9 @@ def analyze_resolution_times(df, output_dir):
         plt.title('Overall Distribution of Resolution Time Categories', fontsize=16, pad=20)
         plt.axis('equal')
         plt.tight_layout()
-        plt.savefig(f"{output_dir}/resolution_time_pie.png", dpi=300, bbox_inches='tight')
+        plt.savefig(f"{output_dir}/resolution_time_pie.pdf", bbox_inches='tight')
         plt.close()
-        print(f"✓ Saved pie chart to {output_dir}/resolution_time_pie.png")
+        print(f"✓ Saved pie chart to {output_dir}/resolution_time_pie.pdf")
     except Exception as e:
         print(f"Error creating pie chart: {e}")
 
@@ -84,12 +85,13 @@ def analyze_resolution_times(df, output_dir):
         issue_percentages = issue_percentages.loc[top_issues]
 
         # Create the horizontal stacked bar chart
-        plt.figure(figsize=(12, 8))
+        plt.figure(figsize=figsize)
 
         # Ensure consistent category order
         category_order = ["Less than 0.5 days", "0.5-2 days", "2-5 days", "More than 5 days"]
         # Get available categories that exist in the data
         available_categories = [cat for cat in category_order if cat in issue_percentages.columns]
+        available_categories_names = ["<0.5 days", "0.5-2 days", "2-5 days", ">5 days"]
 
         issue_percentages = issue_percentages[available_categories]
 
@@ -97,31 +99,31 @@ def analyze_resolution_times(df, output_dir):
         ax = issue_percentages.plot(
             kind='barh',
             stacked=True,
-            figsize=(12, 8),
+            figsize=figsize,
             color=[category_colors[cat] for cat in available_categories],
             width=0.7
         )
 
-        plt.title('Resolution Time Categories by Issue Type', fontsize=16, pad=20)
+        #plt.title('Resolution Time Categories by Issue Type', fontsize=16, pad=20)
         plt.xlabel('Percentage', fontsize=12)
         plt.ylabel('Issue Type', fontsize=12)
         plt.tight_layout()
 
         # Create legend with custom colors
         legend_elements = [
-            Patch(facecolor=category_colors[cat], label=cat)
-            for cat in available_categories
+            Patch(facecolor=category_colors[cat], label=available_categories_names[i])
+            for i, cat in enumerate(available_categories)
         ]
         plt.legend(
             handles=legend_elements,
-            title='Resolution Category',
+            title='Resolution',
             bbox_to_anchor=(1.05, 1),
             loc='upper left'
         )
 
-        plt.savefig(f"{output_dir}/resolution_by_issuetype.png", dpi=300, bbox_inches='tight')
+        plt.savefig(f"{output_dir}/resolution_by_issuetype.pdf", bbox_inches='tight')
         plt.close()
-        print(f"✓ Saved issue type chart to {output_dir}/resolution_by_issuetype.png")
+        print(f"✓ Saved issue type chart to {output_dir}/resolution_by_issuetype.pdf")
     except Exception as e:
         print(f"Error creating issue type chart: {e}")
 
@@ -147,12 +149,13 @@ def analyze_resolution_times(df, output_dir):
         )
 
         # Create the horizontal stacked bar chart
-        plt.figure(figsize=(12, 8))
+        plt.figure(figsize=figsize)
 
         # Ensure consistent category order
         category_order = ["Less than 0.5 days", "0.5-2 days", "2-5 days", "More than 5 days"]
         # Get available categories that exist in the data
         available_categories = [cat for cat in category_order if cat in priority_percentages.columns]
+        available_categories_names = ["<0.5 days", "0.5-2 days", "2-5 days", ">5 days"]
 
         priority_percentages = priority_percentages[available_categories]
 
@@ -160,31 +163,31 @@ def analyze_resolution_times(df, output_dir):
         ax = priority_percentages.plot(
             kind='barh',
             stacked=True,
-            figsize=(12, 8),
+            figsize=figsize,
             color=[category_colors[cat] for cat in available_categories],
             width=0.7
         )
 
-        plt.title('Resolution Time Categories by Priority', fontsize=16, pad=20)
+        #plt.title('Resolution Time Categories by Priority', fontsize=16, pad=20)
         plt.xlabel('Percentage', fontsize=12)
         plt.ylabel('Priority', fontsize=12)
         plt.tight_layout()
 
         # Create legend with custom colors
         legend_elements = [
-            Patch(facecolor=category_colors[cat], label=cat)
-            for cat in available_categories
+            Patch(facecolor=category_colors[cat], label=available_categories_names[i])
+            for i, cat in enumerate(available_categories)
         ]
         plt.legend(
             handles=legend_elements,
-            title='Resolution Category',
+            title='Resolution',
             bbox_to_anchor=(1.05, 1),
             loc='upper left'
         )
 
-        plt.savefig(f"{output_dir}/resolution_by_priority.png", dpi=300, bbox_inches='tight')
+        plt.savefig(f"{output_dir}/resolution_by_priority.pdf", bbox_inches='tight')
         plt.close()
-        print(f"✓ Saved priority chart to {output_dir}/resolution_by_priority.png")
+        print(f"✓ Saved priority chart to {output_dir}/resolution_by_priority.pdf")
     except Exception as e:
         print(f"Error creating priority chart: {e}")
 
